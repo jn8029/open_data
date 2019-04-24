@@ -1,5 +1,10 @@
 <!-- g++ test-main.o arrayQueue.cpp -o tests && tests -r console
 g++ -std=c++14 *.cpp  -->
+
+<!-- mac
+g++ ../test-main.o testSLStack.cpp -std=c++11 -o tests && ./tests -->
+
+## Array-Based Data Structures
 ## arrayList
 
 ```arrayList``` is a array based list data structure that implements:
@@ -64,4 +69,27 @@ The asymptotic runtime is actually the same as ```arrayList``` but with the impl
 | popFront(i,x) | O(n)      |   
 | popBack(i) | O(n)      |
 
-The asymptotic runtime is the same across the 4 functions: O(n) because of the element shifting operations. It can be improved by using doubly-linked lists.
+The asymptotic runtime is the same across the 4 functions: O(n) because of the element shifting operations. It can be improved by using doubly-linked lists, or by using circular array while keeping records of head and tail indices.
+
+# Linked-List-Based Data Structures
+
+## SLStack
+```SLStack``` is a singly-linked-list-based data structure that implements ```push``` and ```pop``` functions on a LIFO(last-in-first-out) basis.
+
+| Public Function      | big-O         |
+| :-: |:-:|
+| push(x)     | O(1)|
+| pop()     | O(1)      |  
+
+The asymptotic runtime of singly linked list based stack is the same as that implemented with an array based list. When adding an element, it is always added to the head of the linked list; when removing an element, the head element is removed.
+
+## SLQueue
+
+```SLQueue``` is a singly-linked-list based data structure that implements functions ```push``` and ```pop``` on a FIFO(first-in-first-out) basis.
+
+The asymptotic runtime of singly linked list based queue is the same as that implemented with a circular array based list. When adding an element, it is always added to the tail of the linked list; when removing an element, the head element is removed.
+
+| Public Function      | big-O         |
+| :-: |:-:|
+| push(x)     | O(1)|
+| pop()     | O(1)      |  
