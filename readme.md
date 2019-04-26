@@ -93,3 +93,14 @@ The asymptotic runtime of singly linked list based queue is the same as that imp
 | :-: |:-:|
 | push(x)     | O(1)|
 | pop()     | O(1)      |  
+
+## DLList
+
+```DLList``` is a doubly linked list. Compared with a singly linked list, each node in the ```DLList``` stores 2 pointers to the previous and next node. It makes adding and removing element efficient, assuming we already have the element at hand. If a search is needed before ```add``` or ```remove``` is called, a O(n) get operation is needed to traverse the list and find the node at nth location.
+
+| Public Function      | big-O         |
+| :-: |:-:|
+| add(i, x)     | O(n)|
+| remove(i)     | O(n)      |  
+| addBefore(Node, x)     | O(1)|
+| removeNode(Node)     | O(1)      |  
