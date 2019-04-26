@@ -10,6 +10,7 @@ TEST_CASE("initiate empty SLStack") {
     for (int i = 0 ; i<n; i++){
       stack.push(i);
     }
+  stack.printAll();
     REQUIRE(stack.getElementCount()==n);
   }
   SECTION("test pop(): pop an element from empty stack"){
@@ -23,6 +24,7 @@ TEST_CASE("initiate SLStack with n elements") {
   for (int i = 0 ; i<n; i++){
     stack.push(i);
   }
+  stack.printAll();
   REQUIRE( stack.getElementCount() == 10);
   SECTION("test pop(): pop an element from empty stack"){
     int counter = 9;

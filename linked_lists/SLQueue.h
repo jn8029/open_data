@@ -9,12 +9,13 @@ struct Node {
 };
 
 template <typename T>
-class SLStack{
+class SLQueue{
 public:
-  SLStack(){
+  SLQueue(){
     struct Node<T> dummy;
     dummy.next = &dummy;
     head = &dummy;
+    tail = &dummy;
 
   }
   void push(T value){
@@ -27,13 +28,15 @@ public:
     struct Node<T>* node;
     node = (struct Node<T>*)malloc(sizeof(struct Node<T>));
     node->value = value;
-    node->next = head;
-    head = node;
+    node->next = node;
+    tail->next = node;
+    tail = node;
+    if (elementCount==0) head = node;
     elementCount++;
   }
   T pop(){
     if (elementCount == 0){
-      throw("pop: stack is empty.");
+      throw("pop: queue is empty.");
     }
     T value = head->value;
     head = head->next;
@@ -54,6 +57,7 @@ public:
   }
 private:
   struct Node<T>* head;
+  struct Node<T>* tail;
   int elementCount = 0;
 
 

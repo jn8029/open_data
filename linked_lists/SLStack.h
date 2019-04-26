@@ -18,7 +18,8 @@ public:
 
   }
   void push(T value){
-    // below implementation is wrong.
+    // below implementation is wrong. because node will be in stack
+
     // struct Node<T> node;
     // node.value = value;
     // node.next = head;
