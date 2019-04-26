@@ -12,10 +12,11 @@ template <typename T>
 class SLQueue{
 public:
   SLQueue(){
-    struct Node<T> dummy;
-    dummy.next = &dummy;
-    head = &dummy;
-    tail = &dummy;
+    struct Node<T>* dummy;
+    dummy = (struct Node<T>*)malloc(sizeof(struct Node<T>));
+    dummy->next = dummy;
+    head = dummy;
+    tail = dummy;
 
   }
   void push(T value){

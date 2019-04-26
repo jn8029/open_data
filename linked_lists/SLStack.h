@@ -12,9 +12,10 @@ template <typename T>
 class SLStack{
 public:
   SLStack(){
-    struct Node<T> dummy;
-    dummy.next = &dummy;
-    head = &dummy;
+    struct Node<T>* dummy;
+    dummy = (struct Node<T>*)malloc(sizeof(struct Node<T>));
+    dummy->next = dummy;
+    head = dummy;
 
   }
   void push(T value){
