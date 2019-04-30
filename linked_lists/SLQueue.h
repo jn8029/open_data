@@ -60,8 +60,7 @@ private:
   struct Node<T>* head;
   struct Node<T>* tail;
   int elementCount = 0;
-
-
 };
+
 
 #endif
