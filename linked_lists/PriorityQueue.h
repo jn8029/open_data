@@ -1,13 +1,20 @@
+/**
+  Assignment 1, Question 1.a, PriorityQueue.h
+  Purpose: implementation of priorityQueue with singly linked list
+
+  @author Warren Cheng
+  @version 2019.05.01
+*/
 #ifndef PQUEUE_H
 #define PQUEUE_H
 
 #include <iostream>
 #include <limits>
 using namespace std;
+
 struct Node {
   int value;
   Node* next;
-
 };
 
 class PriorityQueue{
@@ -24,6 +31,8 @@ public:
       throw("deleteMin: queue is empty.");
     }
     int min = numeric_limits<int>::max();
+    //it is necessary to find the nodeBeforeMin rather than finding node with minimal value
+    //because nodeBeforeMin is needed to redirect pointers in the singly linked list
     Node* nodeBeforeMin;
     Node* dummy = new Node;
     dummy->next = head;
@@ -34,15 +43,12 @@ public:
       }
       dummy = dummy->next;
     }
-    ///bug found: edge case, if first is min...
+    // edge case: when the head is the minimum.
     if (nodeBeforeMin->next == head){
       head = head->next;
     } else {
       nodeBeforeMin->next = nodeBeforeMin->next->next;
-
     }
-
-
     elementCount--;
     return min;
   }
@@ -60,8 +66,5 @@ public:
 private:
   Node* head = nullptr;
   int elementCount = 0;
-
 };
-
-
 #endif

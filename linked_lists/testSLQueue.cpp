@@ -9,9 +9,6 @@ TEST_CASE("initiate empty Queue") {
     for (int i = 0 ; i<n; i++){
       queue.push(i);
     }
-
-
-
   }
   SECTION("test pop(): remove an element from empty queue"){
     REQUIRE_THROWS(queue.pop());

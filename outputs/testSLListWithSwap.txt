@@ -1,0 +1,23 @@
+testSLListWithSwap.cpp:13: passed: list.size()==0 for: 0 == 0
+testSLListWithSwap.cpp:14: passed: list.get(0)
+testSLListWithSwap.cpp:15: passed: list.swap(0)
+testSLListWithSwap.cpp:19: passed: list.size()==0 for: 0 == 0
+testSLListWithSwap.cpp:20: passed: list.get(0)
+9       8       7       6       5       4       3       2       1       0
+swapping index: 0 and 1
+8       9       7       6       5       4       3       2       1       0
+testSLListWithSwap.cpp:34: passed: list.get(swapIndex)==swapBack for: 8 == 8
+testSLListWithSwap.cpp:35: passed: list.get(swapIndex+1)==swapFront for: 9 == 9
+swapping index: 5 and 6
+8       9       7       6       5       3       4       2       1       0
+testSLListWithSwap.cpp:34: passed: list.get(swapIndex)==swapBack for: 3 == 3
+testSLListWithSwap.cpp:35: passed: list.get(swapIndex+1)==swapFront for: 4 == 4
+swapping index: 8 and 9
+8       9       7       6       5       3       4       2       0       1
+testSLListWithSwap.cpp:34: passed: list.get(swapIndex)==swapBack for: 0 == 0
+testSLListWithSwap.cpp:35: passed: list.get(swapIndex+1)==swapFront for: 1 == 1
+testSLListWithSwap.cpp:19: passed: list.size()==0 for: 0 == 0
+testSLListWithSwap.cpp:20: passed: list.get(0)
+testSLListWithSwap.cpp:39: passed: list.swap(9)
+testSLListWithSwap.cpp:40: passed: list.swap(100)
+Passed both 2 test cases with 15 assertions.

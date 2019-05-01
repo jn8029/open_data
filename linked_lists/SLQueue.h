@@ -44,7 +44,7 @@ public:
     elementCount--;
     return value;
   }
-  int getElementCount(){
+  int size(){
     return elementCount;
   }
   void printAll(){
