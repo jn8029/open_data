@@ -3,20 +3,9 @@
 
 TEST_CASE("initiate empty DLList") {
   DLList<int> dlList;
-
-  SECTION("test add(): n elements"){
-    int n = 10;
-    for (int i = 0 ; i<n; i++){
-      dlList.add(i,i);
-
-    }
-    dlList.printAll();
-    for (int i = 0 ; i<n; i++){
-      REQUIRE(dlList.get(i)==i);
-
-    }
-  }
-
+  REQUIRE(dlList.size()==0);
+  REQUIRE_THROWS(dlList.get(0));
+  REQUIRE_THROWS(dlList.swap(0));
 }
 
 TEST_CASE("initiate DLList with n elements") {
@@ -25,14 +14,14 @@ TEST_CASE("initiate DLList with n elements") {
   for (int i = 0 ; i<n; i++){
     dlList.add(i,i);
   }
-  SECTION("test remove()"){
-    dlList.remove(0);
-    REQUIRE(dlList.get(0)==1);
-    dlList.remove(3);
-    REQUIRE(dlList.get(4)==6);
-    REQUIRE(dlList.get(7)==9);
+
+  SECTION("test swap()"){
+    dlList.print();
+    for(size_t i =0; i <dlList.size()-1; i++){
+      cout << "swapping index "<<i <<" and "<<i+1<<endl;
+      dlList.swap(i);
+      dlList.print();
+    }
+
   }
-
-
-
 }
