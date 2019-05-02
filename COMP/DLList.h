@@ -30,46 +30,10 @@ public:
     node->value = value;
     return old_value;
   }
-  Node<T>* getNode(int i) {
-    Node<T>* node;
-    if (i < count / 2) {
-      node = dummy->next;
-      for (int j = 0; j < i; j++){
-        node = node->next;
-      }
-
-    } else {
-      node = dummy;
-      for (int j = count; j > i; j--){
-        node = node->prev;
-      }
-    }
-    return node;
-  }
-  Node<T>* addBefore(Node<T>* node, T value){
-
-    struct Node<T>* addedNode;
-    addedNode = (struct Node<T>*)malloc(sizeof(struct Node<T>));
-    addedNode->prev = node->prev;
-    addedNode->next = node;
-    addedNode->next->prev = addedNode;
-    addedNode->prev->next = addedNode;
-    addedNode->value = value;
-    count++;
-    return addedNode;
-  }
-  void removeNode(struct Node<T>* node){
-    node->prev->next = node->next;
-    node->next->prev = node->prev;
-
-    count--;
-  }
   void add(int index, T value){
     addBefore(getNode(index), value);
   }
-
   T remove(int index){
-
     struct Node<T>* nodeToBeRemoved;
     nodeToBeRemoved = getNode(index);
     T value = nodeToBeRemoved->value;
@@ -120,6 +84,41 @@ public:
 private:
   struct Node<T>* dummy;
   int count = 0;
+  Node<T>* getNode(int i) {
+    Node<T>* node;
+    if (i < count / 2) {
+      node = dummy->next;
+      for (int j = 0; j < i; j++){
+        node = node->next;
+      }
+
+    } else {
+      node = dummy;
+      for (int j = count; j > i; j--){
+        node = node->prev;
+      }
+    }
+    return node;
+  }
+  Node<T>* addBefore(Node<T>* node, T value){
+
+    struct Node<T>* addedNode;
+    addedNode = (struct Node<T>*)malloc(sizeof(struct Node<T>));
+    addedNode->prev = node->prev;
+    addedNode->next = node;
+    addedNode->next->prev = addedNode;
+    addedNode->prev->next = addedNode;
+    addedNode->value = value;
+    count++;
+    return addedNode;
+  }
+  void removeNode(struct Node<T>* node){
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+
+    count--;
+  }
+
 };
 
 #endif

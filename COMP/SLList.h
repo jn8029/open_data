@@ -7,37 +7,54 @@
 */
 #ifndef SLLIST_H
 #define SLLIST_H
-
+#include <stdexcept>
 #include <iostream>
 #include <limits>
 using namespace std;
 
-
+template <typename T>
 struct Node{
-  int value;
-  Node* next;
+  T value;
+  Node<T>* next;
 };
+template <typename T>
 class SLList{
 public:
-  void insert(int index, int value){
-    if (index>=count && count!=0){
-      cout<<"insert: index out of range."<<endl;
-      return;
+  void insert(int index, T value){
+    if ((index>=count && count!=0) || (index>0 && count==0)){
+      throw out_of_range("insert: index out of range");
     }
-    Node* newNode = new Node;
+    Node<T>* newNode = new Node<T>;
     newNode->value = value;
     if (index == 0){
       newNode->next=  head;
       head = newNode;
     } else {
-      Node* nodeBeforeIndex = getNode(index-1);
+      Node<T>* nodeBeforeIndex = getNode(index-1);
       newNode->next = nodeBeforeIndex->next;
       nodeBeforeIndex->next = newNode;
     }
     count++;
   }
+  T remove(int index){
+    T removed;
+    if (count==0 || index>=count){
+      throw out_of_range("remove: index out of range");
+    }
+    if (index == 0){
+      removed = head->value;
+      head = head->next;
+    } else {
+      Node<T>* nodeBeforeIndex = getNode(index-1);
+      removed = nodeBeforeIndex->next->value;
+      nodeBeforeIndex->next =  nodeBeforeIndex->next->next;
+    }
+    count--;
+    return removed;
+
+  }
   void print(){
-    Node* iter = new Node;
+    Node<T>* iter = new Node<T>;
     iter->next = head;
     for (size_t i =0; i < count; i++){
       iter = iter->next;
@@ -45,12 +62,18 @@ public:
     }
     cout<<endl;
   }
-  int get(int index){
+  T get(int index){
     if (count==0 || index>=count){
-      throw("get: index out of range");
+      throw out_of_range("get: index out of range");
     }
-    int value = getNode(index)->value;
+    T value = getNode(index)->value;
     return value;
+  }
+  void set(int index, T value){
+    if (count==0 || index>=count){
+      throw out_of_range("get: index out of range");
+    }
+    getNode(index)->value = value;
   }
   int size(){
     return count;
@@ -64,18 +87,18 @@ public:
       not out of range.
     */
     if (index>=count-1 || index<0){
-      throw("swap: no element after index location to swap with.");
+      throw out_of_range("swap: no element after index location to swap with.");
     } else if (index > 0) {
-      Node* nodeBeforeIndex = getNode(index-1);
-      Node* nodeOnIndex = nodeBeforeIndex->next;
-      Node* nodeAfterIndex = nodeOnIndex->next;
+      Node<T>* nodeBeforeIndex = getNode(index-1);
+      Node<T>* nodeOnIndex = nodeBeforeIndex->next;
+      Node<T>* nodeAfterIndex = nodeOnIndex->next;
       nodeOnIndex->next = nodeAfterIndex->next;
       nodeBeforeIndex->next = nodeAfterIndex;
       nodeAfterIndex->next = nodeOnIndex;
     } else {
       /* edge case, index = 0, need to change head; */
-      Node* nodeOnIndex = head;
-      Node* nodeAfterIndex = nodeOnIndex->next;
+      Node<T>* nodeOnIndex = head;
+      Node<T>* nodeAfterIndex = nodeOnIndex->next;
       nodeOnIndex->next = nodeAfterIndex->next;
       nodeAfterIndex->next = nodeOnIndex;
       head = nodeAfterIndex;
@@ -83,14 +106,14 @@ public:
   }
 
 private:
-  Node* getNode(int index){
-    Node* iter = head;
+  Node<T>* getNode(int index){
+    Node<T>* iter = head;
     for (size_t i =1; i <= index; i++){
       iter = iter->next;
     }
     return iter;
   }
-  Node* head = nullptr;
+  Node<T>* head = nullptr;
   int count = 0;
 };
 #endif
