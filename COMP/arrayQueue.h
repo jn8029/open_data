@@ -59,8 +59,12 @@ private:
       newArray =(T*)malloc(sizeof(T)*arraySize*2);
       newArraySize = arraySize*2;
     } else {
-      newArray =(T*)malloc(sizeof(T)*arraySize/2);
+      //special case: check if new array size is 0, min should be 1.
       newArraySize = arraySize/2;
+      if (newArraySize==0){
+        newArraySize=1;
+      }
+      newArray =(T*)malloc(sizeof(T)*newArraySize);
     }
     for (int i =0; i<elementCount;i++){
       newArray[i] = array[(i+head)%arraySize];

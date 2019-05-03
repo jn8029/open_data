@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include "PriorityQueue.h"
+#include "DualQueueStack.h"
 #include <vector>
 #include <iterator>
 #include <map>
@@ -13,12 +13,12 @@ void invalid_input(){
 
 int main(){
   string operation;
-  PriorityQueue queue;
+  DualQueueStack stack;
   cout << "Usage: [OPERATION] [ARGS]"<<endl;
   cout << "Operations:"<<endl;
-  cout <<setw(25)<<left<< "add i"<<setw(20)<<left<<"add item i in the priorityQueue;"<<endl;
-  cout <<setw(25)<<left<< "deleteMin"<<setw(20)<<left<<"remove the min value;"<<endl;
-  cout <<setw(25)<<left<< "size"<<setw(20)<<left<<"get the size of the queue;"<<endl;
+  cout <<setw(25)<<left<< "push i"<<setw(20)<<left<<"push item i in the stack;"<<endl;
+  cout <<setw(25)<<left<< "pop"<<setw(20)<<left<<"remove the top item on the stack;"<<endl;
+  cout <<setw(25)<<left<< "size"<<setw(20)<<left<<"get the size of the stack;"<<endl;
   cout <<setw(25)<<left<< "exit"<<setw(20)<<left<<"exit program;"<<endl;
   cout <<endl;
   while (1){
@@ -29,22 +29,21 @@ int main(){
       cout<<"Invalid input, try again."<<endl;
       continue;
     }
-    if(results[0]=="add" && results.size()==2){
+    if(results[0]=="push" && results.size()==2){
       try {
         int index = stoi(results[1]);
-        queue.add(index);
-        queue.print();
+        stack.push(index);
+        stack.print();
       } catch (const std::exception &e) {
-          cout<<"Error! "<<e.what()<<endl;
+        cout<<"Error! "<<e.what()<<endl;
       }
-
     } else if (results[0]=="size" && results.size()==1){
-      cout << queue.size() << endl;
-    } else if (results[0]=="deleteMin" && results.size()==1){
+      cout << stack.size() << endl;
+    } else if (results[0]=="pop" && results.size()==1){
       try {
-        int removed = queue.deleteMin();
+        int removed = stack.pop();
         cout <<"item " << removed << " is removed."<<endl;
-        queue.print();
+        stack.print();
       } catch(const exception &e){
         cout<<"Error! "<<e.what()<<endl;
       }

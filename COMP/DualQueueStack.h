@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include "arrayQueue.h"
-
+#include <string>
 using namespace std;
 
 class DualQueueStack{
@@ -20,7 +20,7 @@ public:
   }
   int pop(){
     if (q1->size()==0){
-      throw("pop: stack is empty.");
+      throw out_of_range("pop: stack is empty.");
     }
     int poppedValue;
     int q1Size = q1->size();
@@ -44,6 +44,22 @@ public:
   int size(){
     int q1Size = q1->size();
     return q1Size;
+  }
+  void print(){
+    int poppedValue;
+    int q1Size = q1->size();
+    string output = "";
+    for (size_t i =0; i< q1Size; i++){
+      poppedValue = q1->dequeue();
+      output =to_string(poppedValue) + " "+ output;
+
+      q2->enqueue(poppedValue);
+    }
+    cout<<output<<endl;
+    arrayQueue<int>* temp = q2;
+    q2 = q1;
+    q1 = temp;
+
   }
 
 private:
