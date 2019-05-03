@@ -9,38 +9,33 @@
 #define DQSTACK_H
 
 #include <iostream>
-#include <queue>
+#include "arrayQueue.h"
+
 using namespace std;
 
 class DualQueueStack{
 public:
   void push(int value){
-    q1->push(value);
+    q1->enqueue(value);
   }
   int pop(){
-    if (q1->empty()){
+    if (q1->size()==0){
       throw("pop: stack is empty.");
     }
     int poppedValue;
     int q1Size = q1->size();
     for (size_t i =0; i< q1Size-1; i++){
-      /*
-        C++ Standard Template Library queue's pop method returns void
-        Therefore take the item in the front of the queue before popping it off
-      */
-      poppedValue = q1->front();
-      q1->pop();
-      q2->push(poppedValue);
+      poppedValue = q1->dequeue();
+      q2->enqueue(poppedValue);
     }
-    poppedValue = q1->front();
-    q1->pop();
+    poppedValue = q1->dequeue();
 
 
     /*
       variable temp: redirecting the pointers of q1 and q2 so that push method does not require
       checking whether q1 or q2 is the main one that contains all the elements.
     */
-    queue<int>* temp = q2;
+    arrayQueue<int>* temp = q2;
     q2 = q1;
     q1 = temp;
     return poppedValue;
@@ -52,7 +47,7 @@ public:
   }
 
 private:
-  queue<int>* q1 = new queue<int>;
-  queue<int>* q2 = new queue<int>;
+  arrayQueue<int>* q1 = new arrayQueue<int>;
+  arrayQueue<int>* q2 = new arrayQueue<int>;
 };
 #endif
