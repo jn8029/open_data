@@ -28,7 +28,7 @@ public:
   }
   int deleteMin(){
     if (elementCount==0){
-      throw("deleteMin: queue is empty.");
+      throw out_of_range("deleteMin: queue is empty.");
     }
     int min = numeric_limits<int>::max();
     //it is necessary to find the nodeBeforeMin rather than finding node with minimal value
