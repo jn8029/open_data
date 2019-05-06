@@ -17,40 +17,40 @@ public:
     dummy->next = dummy;
     dummy->prev = dummy;
   }
-  T get(int i){
-    if (count==0 || i>=count){
-      throw("get: index out of bound.");
+  void insert(int index, T value){
+    if ((index>=count && count!=0) || (index>0 && count==0)){
+      throw out_of_range("insert: index out of range");
     }
-    T value = getNode(i)->value;
-    return value;
-  }
-  T set(int i, T value){
-    Node<T>* node = getNode(i);
-    T old_value = node->value;
-    node->value = value;
-    return old_value;
-  }
-  void add(int index, T value){
     addBefore(getNode(index), value);
   }
   T remove(int index){
+    if (count==0 || index>=count){
+      throw out_of_range("remove: index out of range");
+    }
     struct Node<T>* nodeToBeRemoved;
     nodeToBeRemoved = getNode(index);
     T value = nodeToBeRemoved->value;
     removeNode(nodeToBeRemoved);
     return value;
   }
+  T get(int index){
+    if (count==0 || index>=count){
+      throw out_of_range("get: index out of range");
+    }
+    T value = getNode(index)->value;
+    return value;
+  }
+  T set(int index, T value){
+    if (count==0 || index>=count){
+      throw out_of_range("get: index out of range");
+    }
+    Node<T>* node = getNode(index);
+    T old_value = node->value;
+    node->value = value;
+    return old_value;
+  }
   int size(){
     return count;
-  }
-  void print(){
-    Node<T>* node;
-    node = dummy;
-    for (int i = 0; i<count; i++){
-      node = node->next;
-      cout << node->value << '\t';
-    }
-    cout <<endl;
   }
   void swap(int index){
     /*
@@ -61,7 +61,7 @@ public:
       not out of range.
     */
     if (index>=count-1 || index<0){
-      throw("swap: no element after index location to swap with.");
+      throw out_of_range("swap: no element after index location to swap with.");
     } else if (index >= 0) {
       Node<T>* nodeOnIndex = getNode(index);
       Node<T>* nodeBeforeIndex = nodeOnIndex->prev;
@@ -76,10 +76,29 @@ public:
 
       nodeOnIndex->next = nodeAfter2Index;
       nodeOnIndex->prev = nodeAfterIndex;
-
     }
-
   }
+  void reverse(){
+    Node<T>* node;
+    node = dummy;
+    for (int i = 0; i<count+1; i++){
+      Node<T>* temp;
+      temp = node->next;
+      node->next = node->prev;
+      node->prev = temp;
+      node = temp;
+    }
+  }
+  void print(){
+    Node<T>* node;
+    node = dummy;
+    for (int i = 0; i<count; i++){
+      node = node->next;
+      cout << node->value << '\t';
+    }
+    cout <<endl;
+  }
+
 
 private:
   struct Node<T>* dummy;

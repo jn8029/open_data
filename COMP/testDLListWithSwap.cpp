@@ -1,21 +1,21 @@
 /**
-  Assignment 1, Question 2.a, testSLListWithSwap.cpp
+  Assignment 1, Question 2.a, testDLList<int> WithSwap.cpp
   Purpose: test the implementation of swap function in singly linked list
 
   @author Warren Cheng
   @version 2019.05.01
 */
-#include "SLList.h"
+#include "DLList.h"
 #include "../catch2.hpp"
 #include <vector>
 TEST_CASE("initiate empty list") {
-  SLList<int> list;
+  DLList<int>  list;
   REQUIRE(list.size()==0);
   REQUIRE_THROWS(list.get(0));
   REQUIRE_THROWS(list.swap(0));
 }
 TEST_CASE("initiate list with 10 elements added to the front") {
-  SLList<int> list;
+  DLList<int>  list;
   REQUIRE(list.size()==0);
   REQUIRE_THROWS(list.get(0));
   int count = 10;
@@ -39,8 +39,4 @@ TEST_CASE("initiate list with 10 elements added to the front") {
     REQUIRE_THROWS(list.swap(9));
     REQUIRE_THROWS(list.swap(100));
   }
-
-
-
-
 }

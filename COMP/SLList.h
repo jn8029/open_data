@@ -53,15 +53,6 @@ public:
     return removed;
 
   }
-  void print(){
-    Node<T>* iter = new Node<T>;
-    iter->next = head;
-    for (size_t i =0; i < count; i++){
-      iter = iter->next;
-      cout << iter->value <<'\t';
-    }
-    cout<<endl;
-  }
   T get(int index){
     if (count==0 || index>=count){
       throw out_of_range("get: index out of range");
@@ -103,6 +94,15 @@ public:
       nodeAfterIndex->next = nodeOnIndex;
       head = nodeAfterIndex;
     }
+  }
+  void print(){
+    Node<T>* iter = new Node<T>;
+    iter->next = head;
+    for (size_t i =0; i < count; i++){
+      iter = iter->next;
+      cout << iter->value <<'\t';
+    }
+    cout<<endl;
   }
 
 private:
