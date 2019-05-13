@@ -8,13 +8,10 @@
 #include <map>
 using namespace std;
 
-void invalid_input(){
-  cout <<"Invalid input, try again"<<endl;
-}
 
 int main(){
   string operation;
-  minStack<int> stack;
+  MinStack<int> stack;
   cout << "Usage: [OPERATION] [ARGS]"<<endl;
   cout << "Operations:"<<endl;
   cout <<setw(25)<<left<< "push i"<<setw(20)<<left<<"push item i in the stack;"<<endl;

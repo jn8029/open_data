@@ -71,13 +71,11 @@ public:
 
     for (size_t i =0; i < currentHeight;i++){
         Node* walker = sentinel;
-        cout<<"level "<<i<<endl;
+
         for (size_t j =0; j<elementCount;j++){
           if (walker->next[i]){
             cout<<walker->next[i]->value <<'\t';
             walker = walker->next[i];
-          } else {
-            cout <<"*"<<'\t';
           }
         }
         cout<<endl;
@@ -85,6 +83,18 @@ public:
   }
   int size(){
     return elementCount;
+  }
+  Node* findSmaller(int value){
+    int height = currentHeight;
+    Node* walker = sentinel;
+    while (height>=0){
+      while(walker->next[height] && walker->next[height]->value<value){
+
+        walker = walker->next[height];
+      }
+      height--;
+    }
+    return walker;
   }
 
 
@@ -108,19 +118,7 @@ private:
     return abs(v);
   }
 
-  Node* findSmaller(int value){
-    int height = currentHeight;
-    Node* walker = sentinel;
-    while (height>=0){
 
-      while(walker->next[height] && walker->next[height]->value<value){
-
-        walker = walker->next[height];
-      }
-      height--;
-    }
-    return walker;
-  }
 
   Node* sentinel;
   int maxHeight;

@@ -10,6 +10,7 @@ tests
 # Precompiled Headers
 *.gch
 *.pch
+*.stackdump
 
 # Compiled Dynamic libraries
 *.so

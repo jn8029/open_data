@@ -1,6 +1,6 @@
 /**
   Assignment 1, Question 1.b, DualQueueStack.h
-  Purpose: implementation of a stack with two queues
+  Purpose: implementation of a stack based on two queues
 
   @author Warren Cheng
   @version 2019.05.01
@@ -30,12 +30,11 @@ public:
     }
     poppedValue = q1->dequeue();
 
-
     /*
-      variable temp: redirecting the pointers of q1 and q2 so that push method does not require
+      arrayQueue<int>* temp: redirecting the pointers of q1 and q2 so that push method does not require
       checking whether q1 or q2 is the main one that contains all the elements.
     */
-    arrayQueue<int>* temp = q2;
+    ArrayQueue<int>* temp = q2;
     q2 = q1;
     q1 = temp;
     return poppedValue;
@@ -51,19 +50,18 @@ public:
     string output = "";
     for (size_t i =0; i< q1Size; i++){
       poppedValue = q1->dequeue();
-      output =to_string(poppedValue) + " "+ output;
-
+      output = to_string(poppedValue) + " "+ output;
       q2->enqueue(poppedValue);
     }
     cout<<output<<endl;
-    arrayQueue<int>* temp = q2;
+    ArrayQueue<int>* temp = q2;
     q2 = q1;
     q1 = temp;
 
   }
 
 private:
-  arrayQueue<int>* q1 = new arrayQueue<int>;
-  arrayQueue<int>* q2 = new arrayQueue<int>;
+  ArrayQueue<int>* q1 = new ArrayQueue<int>;
+  ArrayQueue<int>* q2 = new ArrayQueue<int>;
 };
 #endif

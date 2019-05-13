@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include "PriorityQueue.h"
+#include "randomQueue.h"
 #include <vector>
 #include <iterator>
 #include <map>
@@ -13,11 +13,11 @@ void invalid_input(){
 
 int main(){
   string operation;
-  PriorityQueue queue;
+  RandomQueue<int> queue;
   cout << "Usage: [OPERATION] [ARGS]"<<endl;
   cout << "Operations:"<<endl;
   cout <<setw(25)<<left<< "add i"<<setw(20)<<left<<"add item i in the priorityQueue;"<<endl;
-  cout <<setw(25)<<left<< "deleteMin"<<setw(20)<<left<<"remove the min value;"<<endl;
+  cout <<setw(25)<<left<< "remove"<<setw(20)<<left<<"remove a random item;"<<endl;
   cout <<setw(25)<<left<< "size"<<setw(20)<<left<<"get the size of the queue;"<<endl;
   cout <<setw(25)<<left<< "exit"<<setw(20)<<left<<"exit program;"<<endl;
   cout <<endl;
@@ -31,8 +31,8 @@ int main(){
     }
     if(results[0]=="add" && results.size()==2){
       try {
-        int index = stoi(results[1]);
-        queue.add(index);
+        int value = stoi(results[1]);
+        queue.add(value);
         queue.print();
       } catch (const std::exception &e) {
           cout<<"Error! "<<e.what()<<endl;
@@ -40,9 +40,9 @@ int main(){
 
     } else if (results[0]=="size" && results.size()==1){
       cout << queue.size() << endl;
-    } else if (results[0]=="deleteMin" && results.size()==1){
+    } else if (results[0]=="remove" && results.size()==1){
       try {
-        int removed = queue.deleteMin();
+        int removed = queue.remove();
         cout <<"item " << removed << " is removed."<<endl;
         queue.print();
       } catch(const exception &e){

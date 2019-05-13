@@ -1,7 +1,15 @@
+/**
+  Assignment 1, Question 2.b, DLList.h
+  Purpose: implementation of swap function in doubly linked list
+
+  @author Warren Cheng
+  @version 2019.05.01
+*/
 #ifndef DLLIST_H
 #define DLLIST_H
 #include <iostream>
 using namespace std;
+
 template <typename T>
 struct Node {
   T value;
@@ -18,13 +26,13 @@ public:
     dummy->prev = dummy;
   }
   void insert(int index, T value){
-    if ((index>=count && count!=0) || (index>0 && count==0)){
+    if ((index>=count && count!=0) || (index>0 && count==0) || (index<0)){
       throw out_of_range("insert: index out of range");
     }
     addBefore(getNode(index), value);
   }
   T remove(int index){
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("remove: index out of range");
     }
     struct Node<T>* nodeToBeRemoved;
@@ -34,14 +42,14 @@ public:
     return value;
   }
   T get(int index){
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("get: index out of range");
     }
     T value = getNode(index)->value;
     return value;
   }
   T set(int index, T value){
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("get: index out of range");
     }
     Node<T>* node = getNode(index);

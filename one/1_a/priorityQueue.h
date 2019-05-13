@@ -12,6 +12,7 @@
 #include <limits>
 using namespace std;
 
+// struct Node for the linked list.
 struct Node {
   int value;
   Node* next;
@@ -30,19 +31,10 @@ public:
     if (elementCount==0){
       throw out_of_range("deleteMin: queue is empty.");
     }
-    int min = numeric_limits<int>::max();
     //it is necessary to find the nodeBeforeMin rather than finding node with minimal value
     //because nodeBeforeMin is needed to redirect pointers in the singly linked list
-    Node* nodeBeforeMin;
-    Node* dummy = new Node;
-    dummy->next = head;
-    for (size_t i =0; i< elementCount; i++){
-      if (dummy->next->value < min){
-        min = dummy->next->value;
-        nodeBeforeMin = dummy;
-      }
-      dummy = dummy->next;
-    }
+    Node *nodeBeforeMin = findNodeBeforeMin();
+    int min = nodeBeforeMin->next->value;
     // edge case: when the head is the minimum.
     if (nodeBeforeMin->next == head){
       head = head->next;
@@ -64,6 +56,20 @@ public:
     cout<<endl;
   }
 private:
+  Node* findNodeBeforeMin(){
+    int min = numeric_limits<int>::max();
+    Node* nodeBeforeMin;
+    Node* dummy = new Node;
+    dummy->next = head;
+    for (size_t i =0; i< elementCount; i++){
+      if (dummy->next->value < min){
+        min = dummy->next->value;
+        nodeBeforeMin = dummy;
+      }
+      dummy = dummy->next;
+    }
+    return nodeBeforeMin;
+  }
   Node* head = nullptr;
   int elementCount = 0;
 };

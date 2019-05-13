@@ -2,6 +2,7 @@
 #define SLLIST_H
 
 #include "skipList.h"
+#include "arrayList.h"
 #include <iostream>
 
 using namespace std;
@@ -25,6 +26,20 @@ public:
       throw out_of_range("find: element not found.");
     }
   }
+  arrayList<int> findAll(int value){
+    if (skipList::exists(value)){
+      arrayList<int> list;
+      Node* node = skipList::findSmaller(value);
+      while (node->next[0] && node->next[0]->value==value){
+        list.add(0,node->next[0]->value);
+        node = node->next[0];
+      }
+      return list;
+    } else {
+      throw out_of_range("findAll: element not found.");
+  }
+}
+
 };
 
 

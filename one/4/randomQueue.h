@@ -1,57 +1,67 @@
-/**
-  Assignment 1, Question 1.b, DualQueueStack.h
-  Purpose: implementation of a stack with two queues
+#ifndef RQUEUE_H
+#define RQUEUE_H
 
-  @author Warren Cheng
-  @version 2019.05.01
-*/
-
-#ifndef ARRAYQUEUE_H
-#define ARRAYQUEUE_H
-#include <stdlib.h>
 #include <iostream>
+#include <limits>
+#include <random>
 using namespace std;
 
 template <typename T>
-class arrayQueue{
+class RandomQueue {
 public:
-  arrayQueue(){
+  RandomQueue(){
     array = (T*)malloc(sizeof(T)*arraySize);
   }
-  void enqueue(T value){
+  void add(T value){
+
     if (elementCount+1 > arraySize){
       resize(1);
     }
-    array[(elementCount+head)%arraySize] = value;
+    array[elementCount] = value;
     elementCount++;
+
   }
-  T dequeue(){
+  T remove(){
     if(elementCount==0){
-      throw("remove: Queue is empty.");
+      throw out_of_range("remove: Queue is empty.");
     }
-    T value = array[head];
-    head = (head+1)%arraySize;
+
+    int randomIndex =getRandomIndex();
+    cout << "random index = "<<randomIndex<<endl;
+    T toRemove = array[randomIndex];
+    array[randomIndex] = array[elementCount-1];
+
     elementCount--;
     if(arraySize >= 3*elementCount){
       resize(0);
     }
-    return value;
-
+    return toRemove;
   }
-  void printAll(){
+  int size(){
+    return elementCount;
+  }
+  void print(){
     if (!elementCount){
       return;
     }
     for (int i = 0 ; i<elementCount; i++){
 
-      cout << array[(head+i) % arraySize] << '\t';
+      cout << array[i] << '\t';
     }
     cout<<endl;
+
   }
-  int size(){
-    return elementCount;
+  int getRandomIndex(){
+    const int range_from  = 0;
+    const int range_to   = elementCount-1;
+    random_device rand_dev;
+    mt19937 generator(rand_dev());
+    uniform_int_distribution<int> distro(range_from, range_to);
+    return distro(generator);
   }
+
 private:
+
   void resize(int grow){
     T* newArray;
     int newArraySize;
@@ -80,7 +90,5 @@ private:
   int arraySize = 1;
   int head = 0;
 
-
 };
-
 #endif

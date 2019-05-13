@@ -1,15 +1,19 @@
+/**
+  Assignment 1, Question 2.a, interactiveSLListWithSwap.cpp
+  Purpose: a CLI for users to interact with a SLList with swap.
+
+  @author Warren Cheng
+  @version 2019.05.01
+*/
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include "SLList.h"
+#include "slList.h"
 #include <vector>
 #include <iterator>
 #include <map>
 using namespace std;
 
-void invalid_input(){
-  cout <<"Invalid input, try again"<<endl;
-}
 
 int main(){
   string operation;

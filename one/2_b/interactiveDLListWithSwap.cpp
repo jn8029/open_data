@@ -1,3 +1,10 @@
+/**
+  Assignment 1, Question 2.a, interactiveDLListWithSwap.cpp
+  Purpose: a CLI for users to interact with a DLList with swap.
+
+  @author Warren Cheng
+  @version 2019.05.01
+*/
 #include <iostream>
 #include <string>
 #include <iomanip>

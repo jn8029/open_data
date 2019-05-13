@@ -7,9 +7,9 @@
 */
 #ifndef SLLIST_H
 #define SLLIST_H
-#include <stdexcept>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
 using namespace std;
 
 template <typename T>
@@ -17,11 +17,13 @@ struct Node{
   T value;
   Node<T>* next;
 };
+
 template <typename T>
 class SLList{
 public:
   void insert(int index, T value){
-    if ((index>=count && count!=0) || (index>0 && count==0)){
+    // if count is 0 and index = 0, do not throw error,
+    if ((index>=count && count!=0) || (index>0 && count==0)|| (index<0)){
       throw out_of_range("insert: index out of range");
     }
     Node<T>* newNode = new Node<T>;
@@ -38,7 +40,7 @@ public:
   }
   T remove(int index){
     T removed;
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("remove: index out of range");
     }
     if (index == 0){
@@ -54,14 +56,14 @@ public:
 
   }
   T get(int index){
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("get: index out of range");
     }
     T value = getNode(index)->value;
     return value;
   }
   void set(int index, T value){
-    if (count==0 || index>=count){
+    if (count==0 || index>=count || index<0){
       throw out_of_range("get: index out of range");
     }
     getNode(index)->value = value;

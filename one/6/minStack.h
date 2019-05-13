@@ -1,11 +1,11 @@
 #ifndef MINSTACK_H
 #define MINSTACK_H
 #include <iostream>
-#include "listStack.h"
+#include "arrayStack.h"
 using namespace std;
 
 template <typename T>
-class minStack{
+class MinStack{
 public:
   void push(T value){
 
@@ -38,8 +38,8 @@ public:
   }
 
 private:
-  listStack<T> originalStack;
-  listStack<T> minElementStack;
+  ArrayStack<T> originalStack;
+  ArrayStack<T> minElementStack;
 
 };
 

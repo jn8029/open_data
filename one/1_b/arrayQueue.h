@@ -1,64 +1,69 @@
-#ifndef RQUEUE_H
-#define RQUEUE_H
+/**
+  Assignment 1, Question 1.b, arrayQueue.h
+  Purpose: implementation of an array based queue
 
+  @author Warren Cheng
+  @version 2019.05.01
+*/
+
+#ifndef ARRAYQUEUE_H
+#define ARRAYQUEUE_H
+#include <stdlib.h>
 #include <iostream>
-#include <limits>
 using namespace std;
+
 template <typename T>
-class randomQueue {
+class ArrayQueue{
 public:
-  randomQueue(){
+  ArrayQueue(){
     array = (T*)malloc(sizeof(T)*arraySize);
   }
-  void add(T value){
-
+  void enqueue(T value){
     if (elementCount+1 > arraySize){
       resize(1);
     }
-    array[elementCount] = value;
+    array[(elementCount+head)%arraySize] = value;
     elementCount++;
-
   }
-  T remove(){
+  T dequeue(){
     if(elementCount==0){
-      throw("remove: Queue is empty.");
+      throw out_of_range ("remove: Queue is empty.");
     }
-    int randomIndex = rand()%elementCount;
-    cout << "random index = "<<randomIndex<<endl;
-    T toRemove = array[randomIndex];
-    array[randomIndex] = array[elementCount-1];
-
+    T value = array[head];
+    head = (head+1)%arraySize;
     elementCount--;
     if(arraySize >= 3*elementCount){
       resize(0);
     }
-    return toRemove;
+    return value;
+
   }
-  int size(){
-    return elementCount;
-  }
-  void print(){
+  void printAll(){
     if (!elementCount){
       return;
     }
     for (int i = 0 ; i<elementCount; i++){
 
-      cout << array[i] << '\t';
+      cout << array[(head+i) % arraySize] << '\t';
     }
     cout<<endl;
-
   }
-
+  int size(){
+    return elementCount;
+  }
 private:
   void resize(int grow){
+    // input: int grow
+    // using the input grow to execute grow or shrink of resize
     T* newArray;
     int newArraySize;
     if (grow){
       newArray =(T*)malloc(sizeof(T)*arraySize*2);
       newArraySize = arraySize*2;
     } else {
-      //special case: check if new array size is 0, min should be 1.
       newArraySize = arraySize/2;
+      //special case: if arraySize is 1 and 1/2 = 0, need to check
+      //min newArraySize should be 1.
       if (newArraySize==0){
         newArraySize=1;
       }
@@ -78,5 +83,7 @@ private:
   int arraySize = 1;
   int head = 0;
 
+
 };
+
 #endif
