@@ -16,7 +16,7 @@ int findMin(int comparisonArray[], int start, int finish){
     return comparisonArray[start];
   }
   int min = numeric_limits<int>::max();
-  for (size_t i =start; i<finish; i++){
+  for (size_t i =start; i<=finish; i++){
     if (comparisonArray[i]<min){
       min = comparisonArray[i];
     }
@@ -31,7 +31,7 @@ TEST_CASE("initiate empty MinStack<int>") {
   REQUIRE_THROWS(mStack.pop());
 }
 
-TEST_CASE("initiate MinStack<int> with <size> elements.") {
+TEST_CASE("initiate MinStack<int> with <size> elements in descending order.") {
   MinStack<int> mStack;
 
   int comparisonArray[SIZE];
@@ -39,7 +39,6 @@ TEST_CASE("initiate MinStack<int> with <size> elements.") {
     mStack.push(i);
     comparisonArray[i-1] = i;
   }
-
   SECTION("test size()"){
     REQUIRE(mStack.size()==SIZE);
   }
@@ -85,6 +84,7 @@ TEST_CASE("initiate MinStack<int> with <size> elements in random order") {
     mt19937 generator(rand_dev());
     uniform_int_distribution<int> distro(range_from, range_to);
     int value = distro(generator);
+
     mStack.push(value);
     comparisonArray[i] = value;
   }
@@ -95,8 +95,6 @@ TEST_CASE("initiate MinStack<int> with <size> elements in random order") {
   SECTION("test min()"){
     for (size_t i =0 ; i < SIZE; i++){
       int min= mStack.min();
-      cout <<"found min "<<min<<endl;
-      cout <<" find min "<<findMin(comparisonArray, 0 , SIZE-1-i)<<endl;
       REQUIRE(min==findMin(comparisonArray, 0 , SIZE-1-i));
       mStack.pop();
     }
