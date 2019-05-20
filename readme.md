@@ -1,4 +1,4 @@
-<!-- g++ testPriorityQueue.cpp -o tests && tests -r console
+<!-- g++ ../test-main.o testPriorityQueue.cpp -o tests && tests -r console
 g++ -std=c++14 *.cpp  -->
 
 <!-- mac

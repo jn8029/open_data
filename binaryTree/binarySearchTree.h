@@ -28,20 +28,19 @@ public:
     if (found==nullptr){
       Node<K,V>* newNode = createNewNode(key, value);
       root = newNode;
+    } else if (found->key < key){
+      Node<K,V>* newNode = createNewNode(key, value);
+      newNode->parent = found;
+      found->right = newNode;
+    } else if (found->key > key){
+      Node<K,V>* newNode = createNewNode(key, value);
+      newNode->parent = found;
+      found->left = newNode;
     } else {
-      if (found->key == key){
-        found->value = value;
-      } else if (found->key<key){
-        Node<K,V>* newNode = createNewNode(key, value);
-        newNode->parent = found;
-        found->right = newNode;
-
-      } else {
-        Node<K,V>* newNode = createNewNode(key, value);
-        newNode->parent = found;
-        found->left = newNode;
-      }
+      found->value = value;
+      return;
     }
+    count ++;
   }
   bool remove(K key){
     Node<K,V>* found = searchNode(key);
@@ -60,6 +59,7 @@ public:
       } else {
         splice(found);
       }
+      count--;
       return true;
     }
   }
@@ -67,6 +67,9 @@ public:
   void inOrderTraverse(){
     inOrderTraverseHelper(root);
     std::cout<<std::endl;
+  }
+  int size(){
+    return count;
   }
 
 private:
@@ -145,6 +148,7 @@ private:
 
   }
   Node<K, V>* root = nullptr;
+  int count = 0;
 };
 
 #endif
