@@ -13,7 +13,7 @@ using namespace std;
 //   uniform_int_distribution<int> distro(range_from, range_to);
 //   return distro(generator);
 // }
-#define SIZE 100
+#define SIZE 4
 TEST_CASE("initiate empty BST") {
   BST<int, int> bst;
   REQUIRE(bst.size()==0);
@@ -22,14 +22,23 @@ TEST_CASE("initiate empty BST") {
 TEST_CASE("inserting numbers in sequence") {
   BST<int, int> bst;
   for (size_t i = 0; i<SIZE; i++){
-    bst.insert(i,i+10);
+    bst.insert(i,i);
     REQUIRE(bst.size() == i+1);
+    cout << "height of root tree (root =" <<bst.getRoot()->value<< ") is "<<bst.height(bst.getRoot())<<endl;
+    bool root_bal = bst.isBalanced(bst.getRoot());
+    cout << "ROOT balanced = "<< root_bal <<endl;
+
+  }
+
+  for (size_t i = 0; i<SIZE; i++){
+    REQUIRE(bst.search(i) == i);
   }
   for (size_t i = 0; i<SIZE; i++){
-    REQUIRE(bst.search(i) == i+10);
-  }
-  for (size_t i = 0; i<SIZE; i++){
+    cout << "DELTE:height of root tree (root =" <<bst.getRoot()->value<< ") is "<<bst.height(bst.getRoot())<<endl;
+    bool root_bal = bst.isBalanced(bst.getRoot());
+    cout << "ROOT balanced = "<< root_bal <<endl;
     REQUIRE(bst.remove(i) == true);
+
     REQUIRE(bst.size() == SIZE-(i+1));
   }
 

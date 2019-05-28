@@ -32,10 +32,12 @@ public:
       Node<K,V>* newNode = createNewNode(key, value);
       newNode->parent = found;
       found->right = newNode;
+      balance(newNode);
     } else if (found->key > key){
       Node<K,V>* newNode = createNewNode(key, value);
       newNode->parent = found;
       found->left = newNode;
+      balance(newNode);
     } else {
       found->value = value;
       return;
@@ -44,9 +46,12 @@ public:
   }
   bool remove(K key){
     Node<K,V>* found = searchNode(key);
+    Node<K,V>* found_parent = nullptr;
     if (found==nullptr || (found->key)!=key){
       return false;
     } else {
+      found_parent = found->parent;
+
       if (found->left != nullptr && found->right != nullptr){
         Node<K,V>* largestInLeftChild = findLargest(found->left);
         K kHolder = largestInLeftChild->key;
@@ -59,11 +64,11 @@ public:
       } else {
         splice(found);
       }
+      if(found_parent)balance(found_parent);
       count--;
       return true;
     }
   }
-
   void inOrderTraverse(){
     inOrderTraverseHelper(root);
     std::cout<<std::endl;
@@ -71,8 +76,107 @@ public:
   int size(){
     return count;
   }
+  Node<K,V>* getRoot(){
+    return root;
+  }
+  int height(Node<K,V>* node){
+    if (node==nullptr){
+      return -1;
+    }
+    if ((node->right == nullptr) && (node->left==nullptr)){
+      return 0;
+    }
+    int left_height = height(node->left);
+    int right_height = height(node->right);
+    if (right_height>left_height){
+      return right_height+1;
+    } else {
+      return left_height+1;
+    }
+
+  }
+  bool isBalanced(Node<K,V>* node){
+    if (node==nullptr){
+      return true;
+    }
+
+    int left_height = height(node->left);
+    int right_height = height(node->right);
+
+    int height_diff;
+    if (left_height>right_height){
+        height_diff = left_height - right_height;
+    } else {
+        height_diff = right_height - left_height;
+    }
+
+    if (height_diff <=1){
+
+        return true;
+    } else {
+
+        return false;
+    }
+  }
+  void balance(Node<K,V>* node){
+    while(node!=root){
+
+      Node<K,V>* parent = node->parent;
+      Node<K,V>* grandparent = parent->parent;
+      if (!isBalanced(grandparent)){
+
+        if ((node == parent->right) == (parent == grandparent->right)){
+            //single rotate
+            rotate(parent);
+        } else {
+          rotate(node);
+          rotate(node);
+        }
+      } else {
+
+      }
+      node = node->parent;
+
+    }
+
+  }
+  void rotate(Node<K,V>* node){
+
+    Node<K,V>* x = node;
+    Node<K,V>* y = x->parent;
+    Node<K,V>* z = y->parent;
+
+    if (z == nullptr){
+
+        root = x;
+        x->parent = nullptr;
+    } else {
+      relink(z,x,y==(z->left));
+    }
+    if (x==(y->left)){
+      relink(y,x->right,true);
+      relink(x,y,false);
+    } else {
+      relink(y, x->left, false);
+      relink(x, y , true);
+    }
+
+  }
+  void relink(Node<K,V>* parent, Node<K,V>* child, bool make_left_child){
+    if (make_left_child){
+      parent->left = child;
+    } else {
+      parent->right = child;
+    }
+    if (child != nullptr){
+        child->parent = parent;
+    }
+
+  }
 
 private:
+
+
   void splice(Node<K, V>* node){
     //input: target node to be removed, the node has to have 0 or 1 child.
     //result: the target node is spliced and its position is replaced by either its left or right child
