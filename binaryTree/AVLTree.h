@@ -1,6 +1,6 @@
 
-#ifndef BST_H
-#define BST_H
+#ifndef AVLT_H
+#define AVLT_H
 #include <iostream>
 
 template <typename K, typename V>
@@ -13,7 +13,7 @@ struct Node {
 };
 
 template <typename K, typename V>
-class BST{
+class AVLTree{
 public:
   V search(K key){
     Node<K,V>* found = searchNode(key);
@@ -32,12 +32,12 @@ public:
       Node<K,V>* newNode = createNewNode(key, value);
       newNode->parent = found;
       found->right = newNode;
-      balance(newNode);
+      balanceAfterInsertion(newNode);
     } else if (found->key > key){
       Node<K,V>* newNode = createNewNode(key, value);
       newNode->parent = found;
       found->left = newNode;
-      balance(newNode);
+      balanceAfterInsertion(newNode);
     } else {
       found->value = value;
       return;
@@ -50,7 +50,7 @@ public:
     if (found==nullptr || (found->key)!=key){
       return false;
     } else {
-      found_parent = found->parent;
+
 
       if (found->left != nullptr && found->right != nullptr){
         Node<K,V>* largestInLeftChild = findLargest(found->left);
@@ -64,7 +64,8 @@ public:
       } else {
         splice(found);
       }
-      if(found_parent)balance(found_parent);
+      std::cout<<"node "<<found->value<<"is deleted"<<std::endl;
+      balanceAfterDeletion(found);
       count--;
       return true;
     }
@@ -118,11 +119,85 @@ public:
         return false;
     }
   }
+  void balanceAfterDeletion(Node<K,V>* node){
+    while (node!=root && node!=nullptr){
+      Node<K,V>* parent = node->parent;
+      if (parent==nullptr) parent= root;
+      if (!isBalanced(parent)){
+        Node<K,V>* higherChild;
+        if (height(parent->left)>height(parent->right)){
+          higherChild = parent->left;
+        } else {
+          higherChild = parent->right;
+        }
+        Node<K,V>* higherGrandChild;
+        if (height(higherChild->left)>height(higherChild->right)){
+          higherGrandChild = higherChild->left;
+        } else {
+          higherGrandChild = higherChild->right;
+        }
 
+
+        if ((higherGrandChild == higherChild->right) == (higherChild == parent->right)){
+            //single rotate
+            rotate(higherChild);
+        } else {
+          rotate(higherGrandChild);
+          rotate(higherGrandChild);
+        }
+      } else {
+
+      }
+      node = node->parent;
+
+    }
+  }
+  void balanceAfterInsertion(Node<K,V>* node){
+    while(node!=root){
+      Node<K,V>* parent = node->parent;
+      Node<K,V>* grandparent = parent->parent;
+      if (!isBalanced(grandparent)){
+        if ((node == parent->right) == (parent == grandparent->right)){
+            //single rotate
+            rotate(parent);
+        } else {
+          rotate(node);
+          rotate(node);
+        }
+      }
+      node = node->parent;
+    }
+  }
+  void rotate(Node<K,V>* node){
+    Node<K,V>* x = node;
+    Node<K,V>* y = x->parent;
+    Node<K,V>* z = y->parent;
+    if (z == nullptr){
+        root = x;
+        x->parent = nullptr;
+    } else {
+      relink(z,x,y==(z->left));
+    }
+    if (x==(y->left)){
+      relink(y,x->right,true);
+      relink(x,y,false);
+    } else {
+      relink(y, x->left, false);
+      relink(x, y , true);
+    }
+  }
+  void relink(Node<K,V>* parent, Node<K,V>* child, bool make_left_child){
+    if (make_left_child){
+      parent->left = child;
+    } else {
+      parent->right = child;
+    }
+    if (child != nullptr){
+        child->parent = parent;
+    }
+  }
 
 private:
-
-
   void splice(Node<K, V>* node){
     //input: target node to be removed, the node has to have 0 or 1 child.
     //result: the target node is spliced and its position is replaced by either its left or right child
