@@ -3,7 +3,6 @@
 #define BST_H
 #include <iostream>
 #include <vector>
-
 template <typename K, typename V>
 struct Node {
   K key;
@@ -12,10 +11,28 @@ struct Node {
   Node* right = nullptr;
   Node* parent = nullptr;
 };
-
 template <typename K, typename V>
 class BST{
 public:
+  int height(Node<K,V>* node){
+    if (node==nullptr){
+      return -1;
+    }
+    if ((node->right == nullptr) && (node->left==nullptr)){
+      return 0;
+    }
+    int left_height = height(node->left);
+    int right_height = height(node->right);
+    if (right_height>left_height){
+      return right_height+1;
+    } else {
+      return left_height+1;
+    }
+
+  }
+  int size(){
+    return count;
+  }
   V search(K key){
     Node<K,V>* found = searchNode(key);
     if (found==nullptr || (found->key)!=key){
@@ -70,81 +87,25 @@ public:
       return true;
     }
   }
-
-  int size(){
-    return count;
-  }
   Node<K,V>* getRoot(){
+    if (root==nullptr){
+      throw "tree is empty. no root node";
+    }
     return root;
   }
-  int height(Node<K,V>* node){
-    if (node==nullptr){
-      return -1;
-    }
-    if ((node->right == nullptr) && (node->left==nullptr)){
-      return 0;
-    }
-    int left_height = height(node->left);
-    int right_height = height(node->right);
-    if (right_height>left_height){
-      return right_height+1;
-    } else {
-      return left_height+1;
-    }
-
-  }
-  bool isBalanced(Node<K,V>* node){
-    if (node==nullptr){
-      return true;
-    }
-
-    int left_height = height(node->left);
-    int right_height = height(node->right);
-
-    int height_diff;
-    if (left_height>right_height){
-        height_diff = left_height - right_height;
-    } else {
-        height_diff = right_height - left_height;
-    }
-
-    if (height_diff <=1){
-
-        return true;
-    } else {
-
-        return false;
-    }
-  }
-  void inOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
-    if (node==nullptr){return;}
-    if (node->left != nullptr){
-      inOrderTraverse(node->left, nodeList);
-    }
-    nodeList.push_back(node);
-    if (node->right!=nullptr){
-      inOrderTraverse(node->right, nodeList);
-    }
-
-  }
   Node<K,V>* inOrderNext(Node<K,V>* node) {
-    // if (node->left!=nullptr){
-    //     //if node has left child, get the left most
-    //     while (node->left!=nullptr){
-    //       node =  node->left;
-    //     }
-    //     return node;
-    //
-    // } else
+
     if (node->right != nullptr) {
-        //if node has no left child, and has a right child, return
+        //if node has a right child, check if such right child has left child
         if (node->right->left!=nullptr){
+          //node's right child's left child exists, climb down to the left most leaf
           node = node->right;
           while(node->left!=nullptr){
             node = node->left;
           }
           return node;
         } else {
+          //node's right child's left child does not exist, return node's right child
           return node->right;
         }
     } else {
@@ -170,16 +131,6 @@ public:
         }
         return nullptr;
     }
-  }
-  void preOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
-    if (node==nullptr){
-        return;
-    }
-
-    nodeList.push_back(node);
-    preOrderTraverse(node->left, nodeList);
-    preOrderTraverse(node->right, nodeList);
-
   }
   Node<K,V>* preOrderNext(Node<K,V>* node) {
     if (node->left != nullptr) {
@@ -224,6 +175,50 @@ public:
         return nullptr;
     }
 }
+  Node<K,V>* postOrderNext(Node<K,V>* node) {
+    //no need to care about children, climb up until no paren
+    if (node->parent != nullptr){
+      if (node == node->parent->left) {
+          // if node is a left child
+          if (node->parent->right != nullptr) {
+              //return its sibling
+
+              return getLeftMostLeaf(node->parent->right);
+
+          } else {
+              //node is left child and no sibling, climb up
+              return node->parent;
+          }
+      } else {
+          return node->parent;
+      }
+
+    }
+
+
+    return nullptr;
+}
+  void inOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
+    if (node==nullptr){return;}
+    if (node->left != nullptr){
+      inOrderTraverse(node->left, nodeList);
+    }
+    nodeList.push_back(node);
+    if (node->right!=nullptr){
+      inOrderTraverse(node->right, nodeList);
+    }
+
+  }
+  void preOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
+    if (node==nullptr){
+        return;
+    }
+
+    nodeList.push_back(node);
+    preOrderTraverse(node->left, nodeList);
+    preOrderTraverse(node->right, nodeList);
+
+  }
   void postOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
     if (node==nullptr){
         return;
@@ -234,49 +229,7 @@ public:
     nodeList.push_back(node);
 
   }
-  Node<K,V>* leftMostLeaf(Node<K,V>* node){
-      while (node->left || node->right)
-      {
-          if(node->left) node=node->left;
-          else node=node->right;
-      }
-
-      return node;
-  }
-  Node<K,V>* postOrderNext(Node<K,V>* node) {
-      //no need to care about children, climb up until no paren
-      if (node->parent != nullptr){
-        if (node == node->parent->left) {
-            // if node is a left child
-            if (node->parent->right != nullptr) {
-                //return its sibling
-
-                return leftMostLeaf(node->parent->right);
-
-            } else {
-                //node is left child and no sibling, climb up
-                return node->parent;
-            }
-        } else {
-            return node->parent;
-        }
-
-      }
-
-
-      return nullptr;
-  }
-
-
-
-  Node<K,V>* getLeftMost(Node<K,V>* node = nullptr){
-    if (node==nullptr) node = root;
-
-    while (node->left != nullptr){
-        node = node->left;
-    }
-    return node;
-  }
+private:
   Node<K, V>* searchNode(K key){
     Node<K,V>* walker = root;
     Node<K,V>* prevWalker = nullptr;
@@ -292,20 +245,6 @@ public:
     }
     return prevWalker;
   }
-  bool isBST(Node<K,V>* node){
-  bool leftCheck = true;
-  bool rightCheck = true;
-  if (node->left){
-    leftCheck = isBST(node->left) && (node->left->key < node->key);
-  }
-  if (node->right){
-    rightCheck = isBST(node->right) && (node->right->key > node->key);
-  }
-  return leftCheck&&rightCheck;
-}
-private:
-
-
   void splice(Node<K, V>* node){
     //input: target node to be removed, the node has to have 0 or 1 child.
     //result: the target node is spliced and its position is replaced by either its left or right child
@@ -341,14 +280,15 @@ private:
     }
     return walker;
   }
-  Node<K, V>* findSmallest(Node<K, V>* walker){
-    while (walker->left != nullptr){
-      walker = walker->left;
-    }
-    return walker;
+  Node<K,V>* getLeftMostLeaf(Node<K,V>* node){
+      while (node->left || node->right)
+      {
+          if(node->left) node=node->left;
+          else node=node->right;
+      }
+
+      return node;
   }
-
-
   Node<K,V>* createNewNode(K key, V value){
     Node<K,V>* newNode = new Node<K,V>;
     newNode->key = key;
@@ -358,5 +298,4 @@ private:
   Node<K, V>* root = nullptr;
   int count = 0;
 };
-
 #endif
