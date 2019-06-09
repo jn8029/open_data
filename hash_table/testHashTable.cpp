@@ -10,10 +10,15 @@ TEST_CASE("initiate empty Queue") {
   for (int i = 0 ; i <10; i++){
     int* key = new int;
     *key = i;
+    cout <<"address of key "<<i<< "is "<<key<<endl;
     int* v = new int;
-    *v = 0;
+    *v = i;
     map.insert(*key, *v);
+    int found = map.find(*key);
+    cout <<" found "<< found<<endl;
   }
+
+
 
 
 

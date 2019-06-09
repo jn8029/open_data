@@ -11,7 +11,8 @@ tests
 *.gch
 *.pch
 *.stackdump
-
+*.pdf
+*.zip
 # Compiled Dynamic libraries
 *.so
 *.dylib

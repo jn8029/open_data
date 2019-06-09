@@ -1,7 +1,13 @@
-
+/**
+  Assignment 2, Question 2, BST.h
+  Purpose: implement isBST method to check if the tree satisfied the property of a BST
+  @author Warren Cheng
+  @version 2019.06.05
+*/
 #ifndef BST_H
 #define BST_H
 #include <iostream>
+#include <vector>
 
 template <typename K, typename V>
 struct Node {
@@ -69,14 +75,11 @@ public:
       return true;
     }
   }
-  void inOrderTraverse(){
-    inOrderTraverseHelper(root);
-    std::cout<<std::endl;
-  }
   int size(){
     return count;
   }
   Node<K,V>* getRoot(){
+    if (root==nullptr){throw "tree is empty";}
     return root;
   }
   int height(Node<K,V>* node){
@@ -95,31 +98,36 @@ public:
     }
 
   }
-  bool isBalanced(Node<K,V>* node){
-    if (node==nullptr){
-      return true;
+  Node<K, V>* searchNode(K key){
+    Node<K,V>* walker = root;
+    Node<K,V>* prevWalker = nullptr;
+    while (walker != nullptr){
+      prevWalker = walker;
+      if (walker->key==key){
+        return walker;
+      } else if (walker->key< key){
+        walker = walker->right;
+      } else {
+        walker = walker->left;
+      }
     }
-
-    int left_height = height(node->left);
-    int right_height = height(node->right);
-
-    int height_diff;
-    if (left_height>right_height){
-        height_diff = left_height - right_height;
-    } else {
-        height_diff = right_height - left_height;
-    }
-
-    if (height_diff <=1){
-
-        return true;
-    } else {
-
-        return false;
-    }
+    return prevWalker;
   }
-
-
+  bool isBST(Node<K,V>* node){
+    //check if left subtree is a BST and right subtree is a BST recursivly
+    bool leftCheck = true;
+    bool rightCheck = true;
+    if (node->left){
+      //node's left subtree is a BST and node's left child's key is smaller than node's key
+      leftCheck = isBST(node->left) && (node->left->key < node->key);
+    }
+    if (node->right){
+      //node's right subtree is a BST and node's right child's key is larger than node's key
+      rightCheck = isBST(node->right) && (node->right->key > node->key);
+    }
+    //return true is both check are positive
+    return leftCheck&&rightCheck;
+  }
 private:
 
 
@@ -157,38 +165,6 @@ private:
       walker = walker->right;
     }
     return walker;
-  }
-  Node<K, V>* findSmallest(Node<K, V>* walker){
-    while (walker->left != nullptr){
-      walker = walker->left;
-    }
-    return walker;
-  }
-  void inOrderTraverseHelper(Node<K,V>* walker){
-    if (walker!=nullptr){
-      if (walker->left != nullptr){
-        inOrderTraverseHelper(walker->left);
-      }
-      std::cout << walker->key<<"\t";
-      if (walker->right!=nullptr){
-        inOrderTraverseHelper(walker->right);
-      }
-    }
-  }
-  Node<K, V>* searchNode(K key){
-    Node<K,V>* walker = root;
-    Node<K,V>* prevWalker = nullptr;
-    while (walker != nullptr){
-      prevWalker = walker;
-      if (walker->key==key){
-        return walker;
-      } else if (walker->key< key){
-        walker = walker->right;
-      } else {
-        walker = walker->left;
-      }
-    }
-    return prevWalker;
   }
   Node<K,V>* createNewNode(K key, V value){
     Node<K,V>* newNode = new Node<K,V>;

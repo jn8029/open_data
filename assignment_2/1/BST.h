@@ -1,4 +1,9 @@
-
+/**
+  Assignment 2, Question 1, BST.h
+  Purpose: implement inOrderNext, preOrderNext, postOrderNext methods
+  @author Warren Cheng
+  @version 2019.06.05
+*/
 #ifndef BST_H
 #define BST_H
 #include <iostream>
@@ -94,24 +99,25 @@ public:
     return root;
   }
   Node<K,V>* inOrderNext(Node<K,V>* node) {
+    //in order: left->mid->right
+    //if node is nullptr, return nullptr
+    if (node==nullptr){
+      return nullptr;
+    }
 
     if (node->right != nullptr) {
-        //if node has a right child, check if such right child has left child
-        if (node->right->left!=nullptr){
-          //node's right child's left child exists, climb down to the left most leaf
-          node = node->right;
-          while(node->left!=nullptr){
-            node = node->left;
-          }
-          return node;
-        } else {
-          //node's right child's left child does not exist, return node's right child
-          return node->right;
+        //if node has a right child, return such right child's left most descendant
+        //if node's right child has no left child, return node's right child
+        node = node->right;
+        while(node->left!=nullptr){
+          node = node->left;
         }
+        return node;
+
     } else {
         //no right child, climb up until no parent
         while (node->parent != nullptr) {
-
+            //while node has parent, keep climbing up
             if (node == node->parent->left) {
                 // if node is a left child
                 return node->parent;
@@ -122,6 +128,7 @@ public:
                     return nullptr;
                 } else if (node->parent == node->parent->parent->left) {
                     //node has grandparent and node's parent is a left child
+                    //return grandparent
                     return node->parent->parent;
                 } else {
                     // node has grandparent and node's parent is a right child. then climb up
@@ -133,6 +140,11 @@ public:
     }
   }
   Node<K,V>* preOrderNext(Node<K,V>* node) {
+    // mid->left->right
+    //if node is nullptr, return nullptr
+    if (node==nullptr){
+      return nullptr;
+    }
     if (node->left != nullptr) {
         //if node has left child, return
         return node->left;
@@ -142,7 +154,6 @@ public:
     } else {
         //no left child or right child, climb up until no parent
         while (node->parent != nullptr) {
-
             if (node == node->parent->left) {
                 // if node is a left child
                 if (node->parent->right != nullptr) {
@@ -176,13 +187,18 @@ public:
     }
 }
   Node<K,V>* postOrderNext(Node<K,V>* node) {
-    //no need to care about children, climb up until no paren
+    //left->right->mid
+    //no need to care about children, climb up until no parent
+
+    //if node is nullptr, return nullptr
+    if (node==nullptr){
+      return nullptr;
+    }
     if (node->parent != nullptr){
       if (node == node->parent->left) {
           // if node is a left child
           if (node->parent->right != nullptr) {
-              //return its sibling
-
+              //return the left most leaf in the node's sibling's subtrees
               return getLeftMostLeaf(node->parent->right);
 
           } else {
@@ -190,12 +206,12 @@ public:
               return node->parent;
           }
       } else {
+          //node is a right child, return parent
           return node->parent;
       }
 
     }
-
-
+    //node has no parent, there's no postOrderNext
     return nullptr;
 }
   void inOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
@@ -281,6 +297,8 @@ private:
     return walker;
   }
   Node<K,V>* getLeftMostLeaf(Node<K,V>* node){
+      //get the left most leaf from the node's children
+      //return the node itself if node has no children
       while (node->left || node->right)
       {
           if(node->left) node=node->left;

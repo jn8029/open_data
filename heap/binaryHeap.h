@@ -9,7 +9,7 @@ public:
   };
   bool add(int i){
     if (n+1 > arraySize){
-      std::cout<<"resizing , old size="<<arraySize<<std::endl;
+
       resize();
     }
     array[n] = i;
@@ -52,12 +52,12 @@ private:
     }
   }
   void trickleDown(int i){
-    std::cout<<"trickling down"<<std::endl;
+
     while(i>=0){
       int j = -1;
       int l = left(i);
       int r = right(i);
-      std::cout<<" i >= 0"<<std::endl;
+      
       if (r<n && array[r]<array[i]){
         if (array[r]>array[l]){
           j = l;

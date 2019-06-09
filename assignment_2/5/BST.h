@@ -1,7 +1,13 @@
-
+/**
+  Assignment 2, Question 5, BST.h
+  Purpose: implement preOrderNumber, postOrderNumber and inOrderNumber that assigns individual sequencial numbers based on the traversal algorithms.
+  @author Warren Cheng
+  @version 2019.06.05
+*/
 #ifndef BST_H
 #define BST_H
 #include <iostream>
+#include <vector>
 
 template <typename K, typename V>
 struct Node {
@@ -10,6 +16,9 @@ struct Node {
   Node* left = nullptr;
   Node* right = nullptr;
   Node* parent = nullptr;
+  int inOrderNum;
+  int preOrderNum;
+  int postOrderNum;
 };
 
 template <typename K, typename V>
@@ -50,8 +59,6 @@ public:
     if (found==nullptr || (found->key)!=key){
       return false;
     } else {
-
-
       if (found->left != nullptr && found->right != nullptr){
         Node<K,V>* largestInLeftChild = findLargest(found->left);
         K kHolder = largestInLeftChild->key;
@@ -64,20 +71,12 @@ public:
       } else {
         splice(found);
       }
-
       count--;
       return true;
     }
   }
-  void inOrderTraverse(){
-    inOrderTraverseHelper(root);
-    std::cout<<std::endl;
-  }
   int size(){
     return count;
-  }
-  Node<K,V>* getRoot(){
-    return root;
   }
   int height(Node<K,V>* node){
     if (node==nullptr){
@@ -95,33 +94,83 @@ public:
     }
 
   }
-  bool isBalanced(Node<K,V>* node){
+  Node<K,V>* getRoot(){
+    return root;
+  }
+
+  void inOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
+    if (node==nullptr){return;}
+    if (node->left != nullptr){
+      inOrderTraverse(node->left, nodeList);
+    }
+    nodeList.push_back(node);
+    if (node->right!=nullptr){
+      inOrderTraverse(node->right, nodeList);
+    }
+  }
+  void inOrderNumber(){
+    int i = 0;
+    inOrderNumberHelper(getRoot(), i);
+  }
+  void inOrderNumberHelper(Node<K,V>* node, int &index){
+    if (node==nullptr){return;}
+    if (node->left != nullptr){
+      inOrderNumberHelper(node->left, index);
+    }
+    node->inOrderNum = index;
+    index++;
+    if (node->right!=nullptr){
+      inOrderNumberHelper(node->right, index);
+    }
+  }
+
+  void preOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
     if (node==nullptr){
-      return true;
+        return;
     }
-
-    int left_height = height(node->left);
-    int right_height = height(node->right);
-
-    int height_diff;
-    if (left_height>right_height){
-        height_diff = left_height - right_height;
-    } else {
-        height_diff = right_height - left_height;
+    nodeList.push_back(node);
+    preOrderTraverse(node->left, nodeList);
+    preOrderTraverse(node->right, nodeList);
+  }
+  void preOrderNumber(){
+    int i = 0;
+    preOrderNumberHelper(getRoot(), i);
+  }
+  void preOrderNumberHelper(Node<K,V>* node, int &index){
+    if (node==nullptr){
+        return;
     }
+    node->preOrderNum = index;
+    index++;
+    preOrderNumberHelper(node->left, index);
+    preOrderNumberHelper(node->right, index);
+  }
 
-    if (height_diff <=1){
-
-        return true;
-    } else {
-
-        return false;
+  void postOrderTraverse(Node<K,V>* node, std::vector<Node<K,V>*> &nodeList){
+    if (node==nullptr){
+        return;
     }
+    postOrderTraverse(node->left, nodeList);
+    postOrderTraverse(node->right, nodeList);
+    nodeList.push_back(node);
+
+  }
+  void postOrderNumber(){
+    int i =0;
+    postOrderNumberHelper(getRoot(),i);
+  }
+  void postOrderNumberHelper(Node<K,V>* node, int& index){
+    if (node==nullptr){
+        return;
+    }
+    postOrderNumberHelper(node->left, index);
+    postOrderNumberHelper(node->right, index);
+    node->postOrderNum = index;
+    index = index + 1;
   }
 
 
 private:
-
 
   void splice(Node<K, V>* node){
     //input: target node to be removed, the node has to have 0 or 1 child.
@@ -158,22 +207,19 @@ private:
     }
     return walker;
   }
-  Node<K, V>* findSmallest(Node<K, V>* walker){
-    while (walker->left != nullptr){
-      walker = walker->left;
-    }
-    return walker;
+  Node<K,V>* createNewNode(K key, V value){
+    Node<K,V>* newNode = new Node<K,V>;
+    newNode->key = key;
+    newNode->value = value;
+    return newNode;
   }
-  void inOrderTraverseHelper(Node<K,V>* walker){
-    if (walker!=nullptr){
-      if (walker->left != nullptr){
-        inOrderTraverseHelper(walker->left);
+  Node<K,V>* leftMostLeaf(Node<K,V>* node){
+      while (node->left || node->right)
+      {
+          if(node->left) node=node->left;
+          else node=node->right;
       }
-      std::cout << walker->key<<"\t";
-      if (walker->right!=nullptr){
-        inOrderTraverseHelper(walker->right);
-      }
-    }
+      return node;
   }
   Node<K, V>* searchNode(K key){
     Node<K,V>* walker = root;
@@ -189,12 +235,6 @@ private:
       }
     }
     return prevWalker;
-  }
-  Node<K,V>* createNewNode(K key, V value){
-    Node<K,V>* newNode = new Node<K,V>;
-    newNode->key = key;
-    newNode->value = value;
-    return newNode;
   }
   Node<K, V>* root = nullptr;
   int count = 0;
