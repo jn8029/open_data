@@ -12,21 +12,15 @@ struct Node{
 class priorityQueueM {
 public:
   bool add(int i){
-
     Node* node = new Node;
     node->v = i;
-
     root = merge(node, root);
-
     root->parent = nullptr;
-
     n++;
     return true;
   }
   int remove(){
-
     int toRemove = root->v;
-
     root = merge(root->left, root->right);
     if (root!=nullptr){
       root->parent = nullptr;
@@ -34,7 +28,6 @@ public:
     n--;
     return toRemove;
   }
-
 private:
 
   bool getRandomBool(){
@@ -50,14 +43,11 @@ private:
       return t2;
     }
     if (t2==nullptr){
-
       return t1;
     }
     if (t2->v < t1->v){
       return merge(t2, t1);
     }
-
-
     if (1){
       t1->left = merge(t1->left, t2);
       t1->left->parent = t1;
@@ -67,6 +57,7 @@ private:
     }
     return t1;
   }
+
   int n = 0;
   Node* root = nullptr;
 };
