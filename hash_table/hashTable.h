@@ -58,6 +58,7 @@ private:
   }
 
   int arraySize = 16;
+  int keyCount = 0;
   Node<value_type>** array;
 
 

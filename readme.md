@@ -2,7 +2,7 @@
 g++ -std=c++14 *.cpp  -->
 
 <!-- mac
-g++ ../test-main.o testSLStack.cpp -std=c++11 -o tests && ./tests -->
+g++ ../test-main.o test.cpp -std=c++11 -o tests && ./tests -->
 
 ## Array-Based Data Structures
 ## arrayList
