@@ -71,7 +71,7 @@ std::vector<int> inEdge(int target){
 
 }
 private:
-std::vector<std::vector<int>> container;
+std::vector<std::vector<int> > container;
 int n;
 int m = 0;
 

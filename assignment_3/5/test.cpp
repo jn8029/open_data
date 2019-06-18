@@ -4,52 +4,60 @@
 #include <vector>
 #include <random>
 using namespace std;
-
-
-
-void dfs2(Graph g, int r) {
-byte[] c = new byte[g.nVertices()];
-Stack<Integer> s = new Stack<Integer>();
-s.push(r);
-while (!s.isEmpty()) {
-  int i = s.pop();
-  if (c[i] == white) {
-    c[i] = grey;
-    for (int j : g.outEdges(i))
-      s.push(j);
-    }
-}
-//https://en.wikipedia.org/wiki/Eulerian_path
-TEST_CASE("graph"){
-  int adjacencyList = {
-    {1,4,5}
-    {0,2}
-    {1,3,5}
-    {2,6}
-    {0,8}
-    {0,2,9}
-    {3,7,9,10}
-    {6,14}
-    {4,9,12,13}
-    {5,6,8}
-    {6,14}
-    {15}
-    {8}
-    {8,14}
-    {7,10,13,15}
-    {11,14}
+// Edges as shown in the graph.
+// 0 1
+// 0 4
+// 0 5
+// 1 0
+// 1 2
+// 2 1
+// 2 3
+// 2 5
+// 3 2
+// 3 6
+// 4 0
+// 4 8
+// 5 0
+// 5 2
+// 5 9
+// 6 3
+// 6 7
+// 6 9
+// 6 10
+// 7 6
+// 7 14
+// 8 4
+// 8 9
+// 8 12
+// 8 13
+// 9 5
+// 9 6
+// 9 8
+// 10 6
+// 10 14
+// 11 15
+// 12 8
+// 13 8
+// 13 14
+// 14 7
+// 14 10
+// 14 13
+// 14 15
+// 15 11
+// 15 14
+int main(){
+  Graph g(16);
+  int  num;
+  for (int i = 0; i < 40; i++){
+    Edge e;
+    cin >> e.source;
+    cin >> e.dest;
+    g.addEdge(e);
 
   }
-  priorityQueueM q;
-  vector<int> v;
-  for (int i = SIZE ; i>=0 ; i--){
-    int value = distro(generator);
-    v.push_back(value);
-    REQUIRE(true==q.add(value));
-  }
-  sort(v.begin(), v.end());
-  for (int i = 0 ; i<=SIZE ; i++){
-    int k  = q.remove();
-    REQUIRE(k==v[i]);
-  }
+  cout <<"DFS:"<<endl;
+  g.DFS(6);
+  cout <<"BFS:"<<endl;
+  g.BFS(1);
+
 }

@@ -2,7 +2,8 @@
 #define GRAPHAL_H
 #include <iostream>
 #include <vector>
-
+#include "Stack.h"
+#include "Queue.h"
 typedef struct {
 int source;
 int dest;
@@ -16,7 +17,7 @@ Graph(int n):n(n){
 }
 bool addEdge(Edge e){
   if (e.source < n && e.dest < n && !hasEdge(e)){
-    std::cout<<"19 line."<<std::endl;
+
     container[e.source].push_back(e.dest);
     m++;
     return true;
@@ -70,6 +71,44 @@ std::vector<int> inEdge(int target){
   return result;
 
 }
+  int getEdgeCount(){
+    return m;
+  }
+  void BFS(int i){
+    std::vector<int> visited(n,0);
+    ArrayQueue<int> q;
+    q.enqueue(i);
+    while(q.size()!=0){
+      int traverse = q.dequeue();
+      if (visited[traverse] == 0){
+        visited[traverse] = 1;
+        std::cout<<char(97+traverse)<<", ";
+        std::vector<int> neighbors = outEdge(traverse);
+        for (auto j: neighbors){
+          q.enqueue(j);
+        }
+      }
+    }
+  }
+  void DFS(int i){
+    ArrayStack<int> stack;
+    std::vector<int> visited(n, 0);
+    stack.push(i);
+    while (stack.size()!=0){
+      int traverse = stack.pop();
+      if (visited[traverse] ==0){
+        visited[traverse] = 1;
+        std::cout<<char(97+traverse)<<", ";
+        std::vector<int> neighbors = outEdge(traverse);
+        for (auto j: neighbors){
+
+          stack.push(j);
+        }
+      }
+    }
+    std::cout<<std::endl;
+
+  }
 private:
 std::vector<std::vector<int>> container;
 int n;
